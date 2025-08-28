@@ -1,0 +1,25 @@
+---
+services:
+  wine_ds:
+    build:
+      args:
+        INSTALL_DEV_DEPS: apt-get install -y vim nano htop procps iputils-ping dnsutils
+    image: winapp-datascience-dev
+    volumes:
+      - ./infra/container_bashrc:/wine_ds/.bashrc
+      - ./infra/container_bashrc:/root/.bashrc
+    # user: root
+    environment:
+      - ENV=developpement
+
+  wine_api:
+    build:
+      args:
+        INSTALL_DEV_DEPS: apt-get install -y vim nano htop procps iputils-ping dnsutils
+    image: winapp-api-dev
+    volumes:
+      - ./infra/container_bashrc:/wine_api/.bashrc
+      - ./infra/container_bashrc:/root/.bashrc
+    # user: root
+    environment:
+      - ENV=developpement

@@ -1,0 +1,89 @@
+---
+services:
+  postgresql:
+    image: postgres
+    container_name: wineapp-postgresql
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+    ports:
+      - 5432:5432
+    networks:
+      - wineapp-network
+    volumes:
+      - postgresql-data:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: wineapp-pgadmin
+    restart: always
+    ports:
+      - "8888:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: user@mail.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    networks:
+      - wineapp-network
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+
+  mlflow:
+      build:
+        context: ./
+        dockerfile: wine_mlflow/Dockerfile
+      image: wineapp-mlflow
+      container_name: wineapp-mlflow
+      depends_on:
+        - postgresql
+      ports:
+        - 5000:5000
+      networks:
+        - wineapp-network
+      restart: on-failure
+      volumes:
+        - ./wine_mlflow/mlflow-data:/mlflow
+
+  wine_api:
+    build:
+      context: ./wine_api
+      dockerfile: Dockerfile
+    image: winapp-api
+    container_name: winapp-api
+    volumes:
+      - ./wine_api/wine_api:/wine_api/wine_api
+    depends_on:
+      - postgresql
+      - mlflow
+    ports:
+      - 8000:8000
+    networks:
+      - wineapp-network
+    restart: on-failure
+    environment:
+      - MLFLOW_HOST=mlflow
+      - PYTHONDONTWRITEBYTECODE=1
+
+  wine_ds:
+    build:
+      context: ./wine_ds
+      dockerfile: Dockerfile
+    image: winapp-datascience
+    container_name: winapp-datascience
+    volumes:
+      - ./wine_ds/wine_ds:/wine_ds/wine_ds
+    networks:
+      - wineapp-network
+    environment:
+      - MLFLOW_HOST=mlflow
+      - POSTGRESQL_HOST=postgresql
+      - API_HOST=wine_api
+      - PYTHONDONTWRITEBYTECODE=1
+
+networks:
+  wineapp-network:
+    driver: bridge
+
+volumes:
+  pgadmin-data:
+  postgresql-data:

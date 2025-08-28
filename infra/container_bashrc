@@ -1,0 +1,32 @@
+bold='';
+reset="\e[0m";
+orange="\e[1;33m";
+red="\e[1;31m";
+blue="\e[1;34m";
+green="\e[1;32m";
+white="\e[1;37m";
+
+# Highlight the user name when logged in as root.
+if [[ $(whoami) == "root" ]]; then
+    userStyle="${red}";
+else
+    userStyle="${orange}";
+fi;
+
+# Initialisation
+PS1_START="\n"
+PS1_START+="\[${bold}${userStyle}\]\n\u";
+PS1_START+="\[${white}\] at container ";
+PS1_START+="\[${green}\]\h";
+PS1_START+="\[${white}\] in ";
+PS1_START+="\[${blue}\]\w\[${reset}\]";
+PS1_END="\n";
+PS1_END+="\[${bold}\]\[${white}\]\$ \[${reset}\]";
+
+PS2="\[${green}\]→ \[${reset}\]";
+
+export PS1="$PS1_START$PS1_END";
+export PS2;
+
+alias la="ls -lahF ${colorflag}"
+alias l="ls -lahF ${colorflag}"

@@ -1,0 +1,9 @@
+---
+services:
+  wine_ds:
+    environment:
+      - ENV=production
+
+  wine_api:
+    environment:
+      - ENV=production
