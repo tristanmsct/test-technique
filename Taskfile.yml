@@ -10,45 +10,59 @@ tasks:
       - docker compose -f compose.yaml -f infra/compose.prd.yaml run --rm wine_ds python -m wine_ds.train_model
       - docker compose -f compose.yaml -f infra/compose.prd.yaml up -d wine_api
 
-  start:
+  up:
     desc: Start essential services
     cmds:
       - docker compose -f compose.yaml -f infra/compose.{{.ENV}}.yaml up -d postgresql pgadmin mlflow wine_api
     vars:
-      ENV: '{{.ENV| default "prd"}}'
+      ENV: '{{.ENV | default "prd"}}'
 
   build:
     desc: (Re)-build all images
     cmds:
-      - docker compose -f compose.yaml -f infra/compose.{{.ENV}}.yaml build --no-cache
+      - docker compose -f compose.yaml -f infra/compose.{{.ENV}}.yaml build {{.EXTRA_FLAGS}}
     vars:
-      ENV: '{{.ENV| default "prd"}}'
+      ENV: '{{.ENV | default "prd"}}'
+      EXTRA_FLAGS: '{{.EXTRA_FLAGS | default ""}}'
+
+  restart:
+    desc: Restart all containers
+    cmds:
+      - docker compose -f compose.yaml -f infra/compose.{{.ENV}}.yaml restart
+    vars:
+      ENV: '{{.ENV | default "prd"}}'
+
+  down:
+    desc: Down all containers
+    cmds:
+      - docker compose down
 
   ml:build:
     desc: Build machine learning image
     cmds:
-      - docker compose -f compose.yaml -f infra/compose.{{.ENV}}.yaml build --no-cache wine_ds
+      - docker compose -f compose.yaml -f infra/compose.{{.ENV}}.yaml build {{.EXTRA_FLAGS}} wine_ds
     vars:
-      ENV: '{{.ENV| default "prd"}}'
+      ENV: '{{.ENV | default "prd"}}'
+      EXTRA_FLAGS: '{{.EXTRA_FLAGS | default ""}}'
 
-  ml:start:
+  ml:up:
     desc: Start a machine learning container for testing purposes
     cmds:
       - docker compose -f compose.yaml -f infra/compose.{{.ENV}}.yaml up -d wine_ds
     vars:
-      ENV: '{{.ENV| default "prd"}}'
+      ENV: '{{.ENV | default "prd"}}'
 
   ml:train:
     desc: Train a new model
     cmds:
-      - docker compose -f compose.yaml -f infra/compose.{{.ENV}}.yaml run --rm wine_ds python -m wine_ds.train_model
+      - docker compose -f compose.yaml -f infra/compose.{{.ENV}}.yaml run --rm wine_ds poetry run python -m wine_ds.train_model
     vars:
-      ENV: '{{.ENV| default "prd"}}'
+      ENV: '{{.ENV | default "prd"}}'
 
   ml:test:
     desc: Test the API on a given wine
     cmds:
-      - docker compose -f compose.yaml -f infra/compose.{{.ENV}}.yaml run --rm wine_ds python -m wine_ds.test_api {{.NUM_WINE}}
+      - docker compose -f compose.yaml -f infra/compose.{{.ENV}}.yaml run --rm wine_ds poetry run python -m wine_ds.test_api {{.NUM_WINE}}
     vars:
-      ENV: '{{.ENV| default "prd"}}'
-      NUM_WINE: '{{.NUM_WINE| default 10}}'
+      ENV: '{{.ENV | default "prd"}}'
+      NUM_WINE: '{{.NUM_WINE | default 10}}'
