@@ -5,7 +5,6 @@ exclude: |
     infra/|
     doc/
   )
-exclude_types: []
 
 repos:
   # File hygiene
