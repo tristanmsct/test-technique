@@ -8,7 +8,7 @@ A wine quality prediction app (mostly a mlflow + fastapi in docker tutorial).
 TODO:
 
 - [ ] Améliorer le code sur la partie Machine Learning
-- [ ] Lister les axes d'améliorations (gestion des erreurs, test unitaires / intégration, gestion des secrets)
+- [ ] Lister les axes d'améliorations (gestion des erreurs, test unitaires / intégration)
 
 
 
@@ -51,6 +51,17 @@ After cloning the repo, pre-commit need to be installed.
 ```bash
 uvx pre-commit install
 ```
+
+
+
+Set the secrets.
+
+```bash
+cp infra/secrets/postgres_password.txt.example infra/secrets/postgres_password.txt
+cp infra/secrets/pgadmin_password.txt.example infra/secrets/pgadmin_password.txt
+```
+
+Then change the values to strong passwords.
 
 
 
