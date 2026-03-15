@@ -4,9 +4,9 @@ Created on Sat Apr 13 10:38:53 2024.
 
 @author: Tristan Muscat
 """
+
 import pandas as pd
 from sqlalchemy import create_engine
-
 from wine_ds._settings import settings
 
 engine = create_engine(f"""postgresql://postgres:admin@{settings.POSTGRESQL_HOST}:5432/postgres""")

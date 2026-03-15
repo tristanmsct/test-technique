@@ -5,15 +5,14 @@ Created on Sat Apr 06 15:09:04 2024.
 @author: Tristan Muscat
 """
 
-import pandas as pd
-from fastapi import FastAPI
-import requests
 import json
 
-from wine_api.data_models import WineInput
-from wine_api._settings import settings
-
 import mlflow
+import pandas as pd
+import requests
+from fastapi import FastAPI
+from wine_api._settings import settings
+from wine_api.data_models import WineInput
 
 app = FastAPI()
 

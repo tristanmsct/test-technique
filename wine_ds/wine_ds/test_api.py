@@ -5,14 +5,12 @@ Created on Sat Apr 13 10:38:53 2024.
 @author: Tristan Muscat
 """
 
-import pandas as pd
-from sqlalchemy import create_engine
-import requests
 import json
 import sys
 
-import mlflow
-
+import pandas as pd
+import requests
+from sqlalchemy import create_engine
 from wine_ds._settings import settings
 
 n_wine = 0
@@ -30,10 +28,13 @@ headers = {
     "Content-Type": "application/json",
 }
 
-response = requests.post(f"http://{settings.API_HOST}:8000/quality", headers=headers, data=str_json)
+response = requests.post(
+    f"http://{settings.API_HOST}:8000/quality",
+    headers=headers,
+    data=str_json,
+    timeout=10,
+)
 
 pred = json.loads(response.content.decode("utf-8"))
 
-# print(f"""La qualité prédite du vin n°{n_wine} est de {pred["prediction"]}""")
-
-print(pred)
+print(f"""La qualité prédite du vin n°{n_wine} est de {pred["prediction"]}""")

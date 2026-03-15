@@ -1,0 +1,23 @@
+[tool.ruff]
+line-length = 139
+target-version = "py314"  # helps ruff know what syntax is valid
+
+[tool.ruff.lint]
+select = [
+    "I",   # isort
+    "E",   # pycodestyle errors
+    "F",   # pyflakes
+    "W",   # pycodestyle warnings
+    "B",   # flake8-bugbear (opinionated but catches real bugs)
+    "UP",  # pyupgrade (modernize syntax, e.g. use f-strings, new type hints)
+    "N",   # pep8 naming conventions
+]
+ignore = [
+    "E501",  # line too long (handled by formatter already)
+]
+
+[tool.ruff.lint.isort]
+force-single-line = true
+
+[tool.ty.rules]
+unresolved-import = "ignore"

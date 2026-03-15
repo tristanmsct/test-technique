@@ -5,19 +5,15 @@ Created on Sat Apr 13 11:24:33 2024.
 @author: Tristan Muscat
 """
 
-import pandas as pd
-from sqlalchemy import create_engine
-
-from sklearn.pipeline import Pipeline
-from sklearn.impute import SimpleImputer
-from sklearn.preprocessing import RobustScaler
-from sklearn.ensemble import RandomForestRegressor
-
-from sklearn.model_selection import train_test_split
-
 import mlflow
+import pandas as pd
 from mlflow import MlflowClient
-
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.impute import SimpleImputer
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import RobustScaler
+from sqlalchemy import create_engine
 from wine_ds._settings import settings
 
 # Import data
