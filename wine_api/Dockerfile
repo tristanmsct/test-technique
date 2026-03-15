@@ -12,10 +12,9 @@ ENV PYTHONUNBUFFERED=1 \
 
 RUN apt-get update && apt-get upgrade -y \
     && if [ -n "$INSTALL_DEV_DEPS" ]; then $INSTALL_DEV_DEPS; fi \
-	&& rm -rf /var/lib/apt/lists/* \
 	&& adduser --system --group --uid 1000 --home ${APP_PATH} ${APP_USER} \
     && apt-get purge -y --auto-remove \
-    && rm -rf /root/.cache
+	&& rm -rf /var/lib/apt/lists/* /root/.cache
 
 # Create workdir after creating the user or it will be attributed to root
 WORKDIR ${APP_PATH}

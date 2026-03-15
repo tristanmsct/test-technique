@@ -13,6 +13,10 @@ services:
       - wineapp-network
     volumes:
       - postgresql-data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      retries: 5
 
   pgadmin:
     image: dpage/pgadmin4
@@ -27,24 +31,33 @@ services:
       - wineapp-network
     volumes:
       - pgadmin-data:/var/lib/pgadmin
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:80/misc/ping"]
+      interval: 10s
+      retries: 5
 
   mlflow:
-      build:
-        context: ./
-        dockerfile: wine_mlflow/Dockerfile
-      image: wineapp-mlflow
-      container_name: wineapp-mlflow
-      depends_on:
-        - postgresql
-      ports:
-        - 5000:5000
-      networks:
-        - wineapp-network
-      restart: on-failure
-      environment:
-        - MLFLOW_SERVER_ALLOWED_HOSTS=localhost,localhost:5000,127.0.0.1,127.0.0.1:5000,mlflow,mlflow:5000
-      volumes:
-        - ./wine_mlflow/mlflow-data:/mlflow
+    build:
+      context: ./
+      dockerfile: wine_mlflow/Dockerfile
+    image: wineapp-mlflow
+    container_name: wineapp-mlflow
+    depends_on:
+      postgresql:
+        condition: service_healthy
+    ports:
+      - 5000:5000
+    networks:
+      - wineapp-network
+    restart: on-failure
+    environment:
+      - MLFLOW_SERVER_ALLOWED_HOSTS=localhost,localhost:5000,127.0.0.1,127.0.0.1:5000,mlflow,mlflow:5000
+    volumes:
+      - ./wine_mlflow/mlflow-data:/mlflow
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5000/health')"]
+      interval: 10s
+      retries: 5
 
   wine_api:
     build:
@@ -55,8 +68,10 @@ services:
     volumes:
       - ./wine_api/wine_api:/wine_api/wine_api
     depends_on:
-      - postgresql
-      - mlflow
+      postgresql:
+        condition: service_healthy
+      mlflow:
+        condition: service_healthy
     ports:
       - 8000:8000
     networks:
@@ -64,7 +79,10 @@ services:
     restart: on-failure
     environment:
       - MLFLOW_HOST=mlflow
-      - PYTHONDONTWRITEBYTECODE=1
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/')"]
+      interval: 10s
+      retries: 5
 
   wine_ds:
     build:
@@ -80,7 +98,6 @@ services:
       - MLFLOW_HOST=mlflow
       - POSTGRESQL_HOST=postgresql
       - API_HOST=wine_api
-      - PYTHONDONTWRITEBYTECODE=1
 
 networks:
   wineapp-network:
