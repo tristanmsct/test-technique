@@ -7,9 +7,8 @@ A wine quality prediction app (mostly a mlflow + fastapi in docker tutorial).
 
 TODO:
 
-- [ ] Améliorer le code sur la partie Machine Learning
 - [ ] Lister les axes d'améliorations (gestion des erreurs, test unitaires / intégration)
-
+- [ ] Format logs
 
 
 # **How** to deploy

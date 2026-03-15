@@ -62,7 +62,7 @@ tasks:
   ml:test:
     desc: Test the API on a given wine
     cmds:
-      - docker compose -f compose.yaml -f infra/compose.{{.ENV}}.yaml run --rm wine_ds uv run -m wine_ds.test_api {{.NUM_WINE}}
+      - docker compose -f compose.yaml -f infra/compose.{{.ENV}}.yaml run --rm wine_ds uv run -m wine_ds.demo_api {{.NUM_WINE}}
     vars:
       ENV: '{{.ENV | default "prd"}}'
       NUM_WINE: '{{.NUM_WINE | default 10}}'
