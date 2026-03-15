@@ -70,5 +70,5 @@ tasks:
   ml:ipykernel:
     desc: Start a dev environment
     cmds:
-    - docker compose -f compose.yaml -f infra/compose.dev.yaml up -d wine_ds
-    - docker compose exec wine_ds uv run jupyter notebook --no-browser --ip=0.0.0.0 --port=8888 --NotebookApp.token='mytoken'
+      - docker compose -f compose.yaml -f infra/compose.dev.yaml up -d wine_ds
+      - docker compose exec wine_ds uv run jupyter notebook --no-browser --ip=0.0.0.0 --port=8888 --NotebookApp.token='mytoken'
