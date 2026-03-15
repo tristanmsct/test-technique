@@ -66,3 +66,9 @@ tasks:
     vars:
       ENV: '{{.ENV | default "prd"}}'
       NUM_WINE: '{{.NUM_WINE | default 10}}'
+
+  ml:ipykernel:
+    desc: Start a dev environment
+    cmds:
+    - docker compose -f compose.yaml -f infra/compose.dev.yaml up -d wine_ds
+    - docker compose exec wine_ds uv run jupyter notebook --no-browser --ip=0.0.0.0 --port=8888 --NotebookApp.token='mytoken'

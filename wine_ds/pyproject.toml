@@ -12,3 +12,9 @@ dependencies = [
     "setuptools>=82.0.1",
     "sqlalchemy>=2.0.48",
 ]
+
+[dependency-groups]
+dev = [
+    "ipykernel>=7.2.0",
+    "jupyter>=1.1.1",
+]

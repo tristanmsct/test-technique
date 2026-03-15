@@ -11,23 +11,108 @@ TODO:
 - [ ] Lister les axes d'améliorations (gestion des erreurs, test unitaires / intégration, gestion des secrets)
 
 
-# How to deploy
+
+# **How** to deploy
 
 
 
-From the root folder.
+## Requirements
+
+The modules use python 3.14 or newer. Cleanest way to have it installed is [pyenv](https://github.com/pyenv/pyenv).
+
+Most task are managed and run using [gotask](https://github.com/go-task/task). It is not a hard requirement, commands can be copied and pasted from the `Taskfile.yml` file but it is a lot simpler with gotask.
+
+Every aspect of the project is [dockerised](https://www.docker.com/).
+
+Dependencies are managed with [uv](https://github.com/astral-sh/uv). Pre-commit are also managed using uv.
+
+
+
+> [!Note]
+>
+> Docker is the only real requirement to test the project, python, uv, gotask, etc. are not needed to test since everything is dockerised. They are necessary for working in the project tho.
+
+
+
+Summary requirements:
+
+- Pyenv
+- Python 3.14
+- UV
+- Docker
+- Gotask
+
+
+
+## Project setup
+
+After cloning the repo, pre-commit need to be installed.
 
 ```bash
-task init
-task start
+uvx pre-commit install
 ```
 
 
-Then test.
+
+Then initialize the project.
+
+```bash
+task init
+```
+
+This will build the images, fill the database, train a model, then start all containers.
+
+
+
+Finally you can test the project.
 
 ```bash
 task ml:test NUM_WINE=15
 ```
+
+This should print the result like so :
+
+```
+2026-03-15 12:21:36.567 |SUCCESS  |__main__:<module>:46 |La qualité prédite du vin n°15 est de 5.01 | {}
+```
+
+
+
+## Development guidelines
+
+To build container with dev options :
+
+```bash
+task build ENV=dev
+```
+
+
+
+Then you can get a more comfortable shell with some tools in a container.
+
+```bash
+docker compose exec wine_api bash
+```
+
+
+
+You can start the machine learning container for testing purposes.
+
+```bash
+task ml:up ENV=dev
+```
+
+
+
+## Use the DS container as a development environment
+
+Start the `jupyter` service for the `wine_ds` container.
+
+```bash
+task ml:ipykernel
+```
+
+Then in a notebook in vscode, click on "Select Kernel", then "Existing Jupyter Server", and enter `http://localhost:8889/?token=mytoken`. Now the container environment can be use to develop from vscode. Using this taking, python is not even required on the dev computer.
 
 
 

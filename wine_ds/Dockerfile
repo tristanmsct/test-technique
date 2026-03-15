@@ -4,6 +4,7 @@ ARG APP_PATH=/wine_ds/
 ARG APP_USER=wine_ds
 
 ARG INSTALL_DEV_DEPS
+ARG INSTALL_PY_DEPS
 
 # prevent python from buffering stdout/stderr
 ENV PYTHONUNBUFFERED=1 \
@@ -24,7 +25,7 @@ USER ${APP_USER}
 COPY --chown=${APP_USER}:${APP_USER} pyproject.toml uv.lock ./
 COPY --chown=${APP_USER}:${APP_USER} wine_ds/ ./wine_ds/
 
-RUN uv sync
+RUN if [ -n "$INSTALL_PY_DEPS" ]; then uv sync --group dev; else uv sync; fi
 
 # Override me.
 CMD [ "tail", "-f", "/dev/null" ]

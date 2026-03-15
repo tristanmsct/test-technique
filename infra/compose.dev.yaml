@@ -4,6 +4,7 @@ services:
     build:
       args:
         INSTALL_DEV_DEPS: apt-get install -y vim nano htop procps iputils-ping dnsutils
+        INSTALL_PY_DEPS: "true"
     image: winapp-datascience-dev
     volumes:
       - ./infra/container_bashrc:/wine_ds/.bashrc
@@ -12,6 +13,8 @@ services:
     environment:
       - ENV=developpement
       - LOG_LEVEL=DEBUG
+    ports:
+      - "8889:8888"
 
   wine_api:
     build:
