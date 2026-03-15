@@ -19,6 +19,8 @@ class Settings(BaseSettings):
     POSTGRESQL_HOST: str = "localhost"
     API_HOST: str = "localhost"
 
+    LOG_LEVEL: str = "WARNING"
+
 
 @lru_cache
 def get_settings():

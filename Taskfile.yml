@@ -6,8 +6,8 @@ tasks:
     cmds:
       - docker compose -f compose.yaml -f infra/compose.prd.yaml build
       - docker compose up -d postgresql pgadmin mlflow
-      - docker compose -f compose.yaml -f infra/compose.prd.yaml run --rm wine_ds python -m wine_ds.fill_db
-      - docker compose -f compose.yaml -f infra/compose.prd.yaml run --rm wine_ds python -m wine_ds.train_model
+      - docker compose -f compose.yaml -f infra/compose.prd.yaml run --rm wine_ds uv run -m wine_ds.fill_db
+      - docker compose -f compose.yaml -f infra/compose.prd.yaml run --rm wine_ds uv run -m wine_ds.train_model
       - docker compose -f compose.yaml -f infra/compose.prd.yaml up -d wine_api
 
   up:
@@ -55,14 +55,14 @@ tasks:
   ml:train:
     desc: Train a new model
     cmds:
-      - docker compose -f compose.yaml -f infra/compose.{{.ENV}}.yaml run --rm wine_ds poetry run python -m wine_ds.train_model
+      - docker compose -f compose.yaml -f infra/compose.{{.ENV}}.yaml run --rm wine_ds uv run -m wine_ds.train_model
     vars:
       ENV: '{{.ENV | default "prd"}}'
 
   ml:test:
     desc: Test the API on a given wine
     cmds:
-      - docker compose -f compose.yaml -f infra/compose.{{.ENV}}.yaml run --rm wine_ds poetry run python -m wine_ds.test_api {{.NUM_WINE}}
+      - docker compose -f compose.yaml -f infra/compose.{{.ENV}}.yaml run --rm wine_ds uv run -m wine_ds.test_api {{.NUM_WINE}}
     vars:
       ENV: '{{.ENV | default "prd"}}'
       NUM_WINE: '{{.NUM_WINE | default 10}}'

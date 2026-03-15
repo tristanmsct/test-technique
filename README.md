@@ -9,7 +9,7 @@ TODO:
 
 - [ ] Améliorer le code sur la partie Machine Learning
 - [ ] Ecrire un readme complet
-- [ ] Lister les axes d'améliorations (pre-commit, logs, gestion des erreurs, test unitaires / intégration, gestion des secrets)
+- [ ] Lister les axes d'améliorations (gestion des erreurs, test unitaires / intégration, gestion des secrets)
 
 
 # How to deploy
@@ -24,46 +24,13 @@ task start
 ```
 
 
-
-# Set-up the project
-
-
-
-## Set-up the script environent
-
-
-
-From the `script` directory.
+Then test.
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate
-poetry install --no-root
+task ml:test NUM_WINE=15
 ```
 
 
-
-Fill up the database.
-
-```bash
-python fill_db.py
-```
-
-
-
-Train a model.
-
-```bash
-python train_model.py
-```
-
-
-
-Test the api (might need to restart the api).
-
-```bash
-python test_api.py 10
-```
 
 # Project architecture
 

@@ -17,6 +17,6 @@ class WineInput(BaseModel):
     free_sulfur_dioxide: float
     total_sulfur_dioxide: float
     density: float
-    pH: float
+    pH: float  # noqa: N815
     sulphates: float
     alcohol: float

@@ -9,7 +9,6 @@ from functools import lru_cache
 
 from pydantic_settings import BaseSettings
 
-
 __all__ = ["settings"]
 
 
@@ -20,6 +19,8 @@ class Settings(BaseSettings):
 
     MODEL_NAME: str = "wine_quality"
     MODEL_VERSION: str = "production"
+
+    LOG_LEVEL: str = "WARNING"
 
 
 @lru_cache

@@ -30,3 +30,7 @@ export PS2;
 
 alias la="ls -lahF ${colorflag}"
 alias l="ls -lahF ${colorflag}"
+alias z="cd"
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
