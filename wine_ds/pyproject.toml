@@ -3,6 +3,7 @@ name = "wine-ds"
 version = "0.1.0"
 requires-python = ">=3.14"
 dependencies = [
+    "loguru>=0.7.3",
     "mlflow>=3.10.1",
     "pandas>=2.3.3",
     "psycopg2-binary>=2.9.11",

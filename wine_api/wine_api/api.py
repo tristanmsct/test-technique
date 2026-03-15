@@ -11,6 +11,7 @@ import mlflow
 import pandas as pd
 import requests
 from fastapi import FastAPI
+from wine_api._logging import logger
 from wine_api._settings import settings
 from wine_api.data_models import WineInput
 
@@ -23,18 +24,21 @@ MODEL = mlflow.sklearn.load_model(f"models:/{settings.MODEL_NAME}@{settings.MODE
 @app.get("/")
 async def root():
     """Create root endpoint for the API"""
+    logger.info("Root endpoint called")
     return {"message": "ok"}
 
 
 @app.get("/pipeline")
 async def get_pipeline():
     """Display the model pipeline"""
+    logger.info("Model display endpoint called")
     return str(MODEL)
 
 
 @app.get("/model")
 async def get_model():
     """Display the model details"""
+    logger.info("Model details endpoint called")
     model_url = f"http://{settings.MLFLOW_HOST}:5000" + "/api/2.0/mlflow/registered-models/alias"
     response = requests.get(
         url=model_url,
@@ -49,8 +53,11 @@ async def get_model():
 @app.post("/quality")
 async def get_wine_quality(input: WineInput):
     """Predict the quality of a wine based on its attributes."""
+    logger.info("Model prediction endpoint called")
     df = pd.json_normalize(input.__dict__)
 
     pred = MODEL.predict(df)
+
+    logger.success(f"Prediction returned {pred}")
 
     return {"prediction": pred[0]}

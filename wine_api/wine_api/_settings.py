@@ -20,6 +20,8 @@ class Settings(BaseSettings):
     MODEL_NAME: str = "wine_quality"
     MODEL_VERSION: str = "production"
 
+    LOG_LEVEL: str = "WARNING"
+
 
 @lru_cache
 def get_settings():

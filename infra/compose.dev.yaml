@@ -11,6 +11,7 @@ services:
     # user: root
     environment:
       - ENV=developpement
+      - LOG_LEVEL=DEBUG
 
   wine_api:
     build:
@@ -23,3 +24,4 @@ services:
     # user: root
     environment:
       - ENV=developpement
+      - LOG_LEVEL=DEBUG
