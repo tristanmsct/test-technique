@@ -4,7 +4,7 @@ ARG APP_PATH=/mlflow/
 ARG APP_USER=mlflow
 WORKDIR ${APP_PATH}
 
-RUN pip install --no-cache-dir mlflow==3.10.1
+RUN pip install --no-cache-dir mlflow==3.11.1
 
 ENV BACKEND_URI=sqlite:///mlflow.db
 

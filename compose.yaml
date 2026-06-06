@@ -58,6 +58,7 @@ services:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5000/health')"]
       interval: 10s
       retries: 5
+    pull_policy: never
 
   wine_api:
     build:
@@ -83,6 +84,7 @@ services:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/')"]
       interval: 10s
       retries: 5
+    pull_policy: never
 
   wine_ds:
     build:
@@ -98,6 +100,7 @@ services:
       - MLFLOW_HOST=mlflow
       - POSTGRESQL_HOST=postgresql
       - API_HOST=wine_api
+    pull_policy: never
 
 networks:
   wineapp-network:
